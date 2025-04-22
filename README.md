@@ -1,4 +1,5 @@
 # Rate Runner
+![CI](https://github.com/gmcastil/rate-runner/actions/workflows/python-ci.yml/badge.svg)
 Tool for performing bulk SEE rate calculations using CREME96
 
 # Workflow
