@@ -1,5 +1,6 @@
 .PHONY: venv install test clean
 
+SHELL		:= /bin/bash
 PYTHON 		:= python3
 VENV 		:= .venv
 ACTIVATE 	:= source $(VENV)/bin/activate
