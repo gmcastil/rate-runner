@@ -1,25 +1,30 @@
-.PHONY: venv install test clean
+.PHONY: install test clean
 
-SHELL		:= /bin/bash
-PYTHON 		:= python3
-VENV 		:= .venv
-ACTIVATE 	:= source $(VENV)/bin/activate
+SHELL			:= /bin/bash
+PYTHON 			:= python3
+VENV 			:= venv
+TESTS			:= ./tests
+STAMP_INSTALLED		:= .venv_installed
 
-venv:
+$(VENV):
 	$(PYTHON) -m venv $(VENV)
-	source $(VENV)/bin/activate && pip install --upgrade pip && pip install -r requirements.txt
+	source $(VENV)/bin/activate; \
+	pip install --upgrade pip; \
+	pip install -r requirements.txt
 
-install:
-	source $(VENV)/bin/activate && pip install -r requirements.txt
+$(STAMP_INSTALLED): $(VENV) pyproject.toml $(shell find rate_runner -type f)
+	source $(VENV)/bin/activate; \
+	pip install -e .; \
+	touch $(STAMP_INSTALLED)
 
-test:
-	source $(VENV)/bin/activate && pytest
+test: $(STAMP_INSTALLED)
+	source $(VENV)/bin/activate; \
+	pytest $(TESTS)
 
 clean:
 	rm -rf $(VENV)
+	rm -f $(STAMP_INSTALLED)
 	rm -rf __pycache__
 	rm -rf */__pycache__
 	rm -rf .pytest_cache
-	rm -rf *.pyc
-	rm -rf *.pyo
 
