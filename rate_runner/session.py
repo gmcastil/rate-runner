@@ -8,7 +8,7 @@ from rate_runner import constants
 
 logger = logging.getLogger(__name__)
 
-@pytest.mark.integration
+# @pytest.mark.integration
 def create_authenticated_session(username: str, password: str) -> requests.Session:
     """Log into CREME96 web interface and return an authenticated session
 
@@ -24,14 +24,14 @@ def create_authenticated_session(username: str, password: str) -> requests.Sessi
 
     """
     session = requests.Session()
-    login_payload = build_login_payload(username, password)
+    login_payload = _build_login_payload(username, password)
     response = session.post(constants.CREME96_LOGIN_URL, data=login_payload)
     # Check for non-2xx status
     response.raise_for_status()
 
     return session
 
-def build_login_payload(username: str, password: str) -> dict[str, str]:
+def _build_login_payload(username: str, password: str) -> dict[str, str]:
     """Returns a dictionary containing the appropriate CREME96 login fields"""
 
     # Scraped by looking at the login form submitted in the developer tools
