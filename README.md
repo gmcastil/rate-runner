@@ -4,7 +4,7 @@
 [![macOS](https://github.com/gmcastil/rate-runner/actions/workflows/test-macos.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/test-macos.yml)
 [![Package](https://github.com/gmcastil/rate-runner/actions/workflows/package-ci.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/package-ci.yml)
 
-Tool for performing bulk SEE rate calculations using CREME96
+Tools for performing bulk SEE rate calculations using CREME96
 
 # Workflow
 Clone the repository

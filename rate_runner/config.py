@@ -33,8 +33,8 @@ def load_config_from_path(path: Path = None) -> dict:
         logger.debug("No configuration location provided. Using default: %s", str(path))
 
     if not path.exists():
-        logger.error("Configuration not found at: %s", str(path))
-        raise FileNotFoundError("Configuration not found at: {path}")
+        logger.error("Configuration file not found at: %s", str(path))
+        raise FileNotFoundError("Configuration file not found at: {path}")
 
     # Load and validate user configuration
     with open(path, 'r') as f:
