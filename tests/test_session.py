@@ -2,12 +2,12 @@ import pytest
 
 from rate_runner import constants
 from rate_runner.session import create_authenticated_session
-from rate_runner.session import build_login_payload
+from rate_runner.session import _build_login_payload
 from rate_runner.config import get_default_config_path
 from rate_runner.config import load_config_from_path
 
 def test_login_payload_format():
-    payload = build_login_payload("myuser", "mypassword")
+    payload = _build_login_payload("myuser", "mypassword")
 
     assert isinstance(payload, dict)
     assert "__ac_name" in payload
