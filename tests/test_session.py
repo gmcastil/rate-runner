@@ -1,5 +1,4 @@
 import pytest
-from pathlib import Path
 
 from rate_runner import constants
 from rate_runner.session import create_authenticated_session

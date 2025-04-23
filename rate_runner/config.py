@@ -9,7 +9,7 @@ from rate_runner import constants
 logger = logging.getLogger(__name__)
 
 # Valid configurations need to contain non-empty values for these keys
-REQUIRED_CONFIG_KEYS = ["username", "password", "full_name"]
+REQUIRED_CONFIG_KEYS = ("username", "password", "full_name")
 
 def get_default_config_path() -> Path:
     """Returns default configuration path"""
@@ -30,19 +30,19 @@ def load_config_from_path(path: Path = None) -> dict:
     # Use a platform dependant default location if none was provided
     if not path:
         path = get_default_config_path()
-        logger.debug("No configuration location provided. Using default: %s", str(path))
+        logger.debug("No configuration location provided. Using default: %s", path)
 
     if not path.exists():
-        logger.error("Configuration file not found at: %s", str(path))
-        raise FileNotFoundError("Configuration file not found at: {path}")
+        logger.error("Configuration file not found at: %s", path)
+        raise FileNotFoundError(f"Configuration file not found at: {path}")
 
     # Load and validate user configuration
     with open(path, 'r') as f:
         try:
-            logger.info("Loading user configuration: %s", str(path))
+            logger.info("Loading user configuration: %s", path)
             user_config = json.load(f)
         except json.JSONDecodeError:
-            logger.error("Invalid JSON in configuration: %s", str(path))
+            logger.error("Invalid JSON in configuration: %s", path)
             raise ValueError(f"Invalid JSON in configuration: {path}")
 
     _validate_config(user_config)
