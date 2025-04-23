@@ -27,6 +27,14 @@ test-all: $(STAMP_INSTALLED)
 	@source $(VENV)/bin/activate; \
 	pytest -m "integration or not integration" $(TESTS) -s
 
+lint:
+	@source $(VENV)/bin/activate; \
+	ruff check .
+
+lint-fix:
+	@source $(VENV)/bin/activate; \
+	ruff check . --fix
+
 clean:
 	rm -rf $(VENV)
 	rm -f $(STAMP_INSTALLED)

@@ -1,7 +1,6 @@
 """Manage user authentication with the CREME96 web interface at Vanderbilt """
 
 import logging
-
 import requests
 import pytest
 

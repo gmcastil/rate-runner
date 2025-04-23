@@ -1,13 +1,12 @@
 import os
-import sys
 import platform
 import logging
 import json
 from pathlib import Path
 
-logger = logging.getLogger(__name__)
-
 from rate_runner import constants
+
+logger = logging.getLogger(__name__)
 
 # Valid configurations need to contain non-empty values for these keys
 REQUIRED_CONFIG_KEYS = ["username", "password", "full_name"]
@@ -42,7 +41,7 @@ def load_config_from_path(path: Path = None) -> dict:
         try:
             logger.info("Loading user configuration: %s", str(path))
             user_config = json.load(f)
-        except json.JSONDecodeError as err:
+        except json.JSONDecodeError:
             logger.error("Invalid JSON in configuration: %s", str(path))
             raise ValueError(f"Invalid JSON in configuration: {path}")
 
@@ -52,6 +51,6 @@ def load_config_from_path(path: Path = None) -> dict:
 def _validate_config(user_config: dict):
     """Raises an exception if user configuration is invalid"""
     for key in REQUIRED_CONFIG_KEYS:
-        if not key in user_config:
+        if key not in user_config:
             raise KeyError(f"Configuration missing required key: {key}")
 
