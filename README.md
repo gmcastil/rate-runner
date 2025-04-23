@@ -1,5 +1,8 @@
 # Rate Runner
-![CI](https://github.com/gmcastil/rate-runner/actions/workflows/python-ci.yml/badge.svg)
+![Ubuntu](https://github.com/your-username/your-repo/actions/workflows/test-ubuntu.yml/badge.svg)
+![Windows](https://github.com/your-username/your-repo/actions/workflows/test-windows.yml/badge.svg)
+![macOS](https://github.com/your-username/your-repo/actions/workflows/test-macos.yml/badge.svg)
+![Package](https://github.com/your-username/your-repo/actions/workflows/package-ci.yml/badge.svg)
 
 Tool for performing bulk SEE rate calculations using CREME96
 
