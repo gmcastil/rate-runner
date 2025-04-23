@@ -2,7 +2,7 @@
 [![Ubuntu](https://github.com/gmcastil/rate-runner/actions/workflows/test-ubuntu.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/test-ubuntu.yml)
 [![Windows](https://github.com/gmcastil/rate-runner/actions/workflows/test-windows.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/test-windows.yml)
 [![macOS](https://github.com/gmcastil/rate-runner/actions/workflows/test-macos.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/test-macos.yml)
-[![Package](https://github.com/gmcastil/rate-runner/actions/workflows/package.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/package-ci.yml)
+[![Package](https://github.com/gmcastil/rate-runner/actions/workflows/package-ci.yml/badge.svg)](https://github.com/gmcastil/rate-runner/actions/workflows/package-ci.yml)
 
 Tool for performing bulk SEE rate calculations using CREME96
 
