@@ -6,7 +6,7 @@ import requests
 class BaseRunner(ABC):
 
     def __init__(self, session: requests.Session, user_config: dict,
-                    on_status_update: Optional[Callable[dict, None]] = None)
+                 on_status_update: Optional[Callable[dict, None]] = None):
         self.session = session
         self.user_config = user_config
         self.on_status_update = on_status_update

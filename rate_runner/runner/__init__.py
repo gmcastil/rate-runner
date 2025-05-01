@@ -1,3 +1,3 @@
-from .hup_runner import HeavyIonRateRunner
-from .pup_runner import ProtonRateRunner
+from .hup_runner import HeavyIonRunner
+from .pup_runner import ProtonRunner
 

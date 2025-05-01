@@ -8,7 +8,6 @@ from rate_runner import constants
 
 logger = logging.getLogger(__name__)
 
-# @pytest.mark.integration
 def create_authenticated_session(username: str, password: str) -> requests.Session:
     """Log into CREME96 web interface and return an authenticated session
 

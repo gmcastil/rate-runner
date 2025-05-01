@@ -4,9 +4,12 @@ SHELL			:= /bin/bash
 PYTHON 			:= python3
 VENV 			:= venv
 TESTS			:= ./tests
+PKG_NAME		:= rate_runner
 STAMP_INSTALLED		:= .venv_installed
+COVERAGE_ARGS		:= --cov=$(PKG_NAME) --cov-report=term-missing
 
 $(VENV):
+	@printf '%s\n' "Initializing virtual environment"
 	@$(PYTHON) -m venv $(VENV)
 	@source $(VENV)/bin/activate; \
 	pip install --upgrade pip; \
@@ -21,11 +24,19 @@ test: $(STAMP_INSTALLED)
 	@source $(VENV)/bin/activate; \
 	pytest $(TESTS)
 
+test-cov: $(STAMP_INSTALLED)
+	@source $(VENV)/bin/activate; \
+	pytest $(COVERAGE_ARGS) $(TESTS)
+
 # Note that output can be suppressed and the debugger launched using the -s
 # flag to pytest as well a pdb.set_trace() in the test cose
 test-all: $(STAMP_INSTALLED)
 	@source $(VENV)/bin/activate; \
-	pytest -m "integration or not integration" $(TESTS) -s
+	pytest -m "integration or not integration" $(TESTS)
+
+test-all-cov: $(STAMP_INSTALLED)
+	@source $(VENV)/bin/activate; \
+	pytest -m "integration or not integration" $(COVERAGE_ARGS) $(TESTS)
 
 lint:
 	@source $(VENV)/bin/activate; \
