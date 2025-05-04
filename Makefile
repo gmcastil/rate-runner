@@ -1,4 +1,4 @@
-.PHONY: install test clean
+.PHONY: install test test-cov test-all test-all-cov clean
 
 SHELL			:= /bin/bash
 PYTHON 			:= python3
