@@ -1,5 +1,6 @@
 # Most of this is inherited from Github, so we add our own here
 .venv_installed
+tags
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
