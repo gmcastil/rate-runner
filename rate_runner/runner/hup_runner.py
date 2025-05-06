@@ -1,7 +1,10 @@
+from typing import Tuple, List, Dict, Any
+from typing import Callable, Optional
 import logging
 
-from rate_runner import constants
+import requests
 
+from rate_runner import constants
 from .base import BaseRunner
 
 logger = logging.getLogger(__name__)
@@ -58,7 +61,7 @@ class HeavyIonRunner(BaseRunner):
         self._desc = desc
         logger.info("Environment set to file '%s' (UID: %s)", self._file_name, self._file_uid)
 
-    def add_part(self, part: dict) -> None:
+    def add_part(self, part: Dict[str, Any]) -> None:
         """Adds a heavy ion cross section element to the list of devices to run rates for
 
         Raises:
@@ -69,7 +72,7 @@ class HeavyIonRunner(BaseRunner):
         self._parts.append(part)
         logger.debug("Added device: %s", part["device"])
 
-    def add_parts(self, parts: list[dict]) -> None:
+    def add_parts(self, parts: List[Dict[str, Any]]) -> None:
         """Adds a list of heavy ion cross section elements to the list of devices to run rates for
 
         Raises:
@@ -123,14 +126,14 @@ class HeavyIonRunner(BaseRunner):
             "results": run_results
         })
 
-    def _validate_ready(self): -> None
+    def _validate_ready(self) -> None:
         """Raises an exception if the runner is not ready actually call `run()`"""
         if not self._parts:
             raise RuntimeError("No parts have been added to HUP runner")
         if self._file_uid is None or self._file_name is None:
             raise RuntimeError("LET spectrum has not been set")
 
-    def _build_payload(self, batch: list(dict)) -> dict:
+    def _build_payload(self, batch: List[Dict[str, str]]) -> dict:
         """Constructs a CREME96 HUP template compatible form submission
 
         Takes a batch of up to 10 parts and constructs a POST-compatible dictionary matching the field
@@ -140,7 +143,7 @@ class HeavyIonRunner(BaseRunner):
             batch (list[dict]): 1-10 validated heavy ion cross section dictionaries
 
         Returns:
-
+            List[Tuple[str, str]]: Payload of flattened part values for HupTemplate form
 
         """
 
@@ -193,14 +196,15 @@ class HeavyIonRunner(BaseRunner):
             ("tzoffset", "360"),
         ])
 
-    def _submit_batch(self, payload: dict) -> requests.Response:
+    def _submit_batch(self, payload: List[Tuple[str, str]]) -> requests.Response:
         """Submits a batch payload to CREME96
 
         Args:
-            payload (dict): POST body ready to submitted via requests
+            payload (List[Tuple[str, str]]): Form-encoded POST data as a list of (key, value) pairs
+            including repeated fields for each part
 
         Returns:
-            requests.Response: The HTTP response object
+            requests.Response: The HTTP response object from CREME96
 
         Raises:
             requests.HTTPError
