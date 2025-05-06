@@ -12,10 +12,10 @@ logger = logging.getLogger(__name__)
 # Alias for the callback that will be invoked after each batch is complete
 BatchCompleteCallback = Callable[[dict], None]
 
-class HeavyIonRunner(BaseRunner):
+# The CREME96 backend only allows rates to be run for this many devices at a time
+MAX_BATCH_SIZE = 10
 
-    # The CREME96 backend only allows rates to be run for this many devices at a time
-    MAX_BATCH_SIZE = 10
+class HeavyIonRunner(BaseRunner):
 
     def __init__(self, session: requests.Session,
                  on_batch_complete: Optional[BatchCompleteCallback] = None):
@@ -70,7 +70,7 @@ class HeavyIonRunner(BaseRunner):
         """
         validate_part(part)
         self._parts.append(part)
-        logger.debug("Added device: %s", part["device"])
+        logger.debug("Added device: %s", part["label"])
 
     def add_parts(self, parts: List[Dict[str, Any]]) -> None:
         """Adds a list of heavy ion cross section elements to the list of devices to run rates for
@@ -82,7 +82,7 @@ class HeavyIonRunner(BaseRunner):
         for part in parts:
             validate_part(part)
             self._parts.append(part)
-            logger.debug("Added device: %s", part["device"])
+            logger.debug("Added device: %s", part["label"])
 
     def run(self) -> None:
         """Submits loaded cross sections to CREME96 for rate calculation in the current environment
@@ -133,7 +133,7 @@ class HeavyIonRunner(BaseRunner):
         if self._file_uid is None or self._file_name is None:
             raise RuntimeError("LET spectrum has not been set")
 
-    def _build_payload(self, batch: List[Dict[str, str]]) -> dict:
+    def _build_payload(self, batch: List[Dict[str, str]]) -> List[Tuple[str, str]]:
         """Constructs a CREME96 HUP template compatible form submission
 
         Takes a batch of up to 10 parts and constructs a POST-compatible dictionary matching the field
@@ -175,16 +175,16 @@ class HeavyIonRunner(BaseRunner):
         ]
 
         # Per-part fields
-        for form_key, part_key, convert in field_specs:
+        for form_key, part_key, convert in hup_field_specs:
             for i in range(MAX_BATCH_SIZE):
-                value = parts[i].get(part_key, "") if i < len(parts) else ""
+                value = batch[i].get(part_key, "") if i < len(batch) else ""
                 try:
                     payload.append((form_key, convert(value) if value != "" else ""))
                 except Exception:
                     payload.append((form_key, ""))
 
         for i in range(10):
-            value = parts[i].get("xsInputMethod", "") if i < len(parts) else ""
+            value = batch[i].get("xsInputMethod", "") if i < len(batch) else ""
             payload.append((f"xsInputMethod{i}", str(value)))
 
         # Trailing fields
@@ -195,6 +195,8 @@ class HeavyIonRunner(BaseRunner):
             ("form.submitted", "1"),
             ("tzoffset", "360"),
         ])
+
+        return payload
 
     def _submit_batch(self, payload: List[Tuple[str, str]]) -> requests.Response:
         """Submits a batch payload to CREME96
